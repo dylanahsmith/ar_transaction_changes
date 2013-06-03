@@ -1,28 +1,10 @@
 require "ar_transaction_changes/version"
 
 module ArTransactionChanges
-  def create(*)
-    super.tap do |status|
-      store_transaction_changed_attributes if status != false
-    end
-  end
 
-  def update(*)
-    super.tap do |status|
-      store_transaction_changed_attributes if status != false
-    end
-  end
-
-  def committed!(*)
-    super
-  ensure
-    @transaction_changed_attributes = nil
-  end
-
-  def rolledback!(*)
-    super
-  ensure
-    @transaction_changed_attributes = nil
+  def self.included(clazz)
+    clazz.after_save :store_transaction_changed_attributes
+    clazz.after_commit :reset_changed_attributes
   end
 
   def transaction_changed_attributes
@@ -30,6 +12,10 @@ module ArTransactionChanges
   end
 
   private
+
+  def reset_changed_attributes
+    @transaction_changed_attributes = nil
+  end
 
   def store_transaction_changed_attributes
     @transaction_changed_attributes = transaction_changed_attributes
