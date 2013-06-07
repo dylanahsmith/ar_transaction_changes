@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] = "test"
+require 'pry'
 require 'pathname'
 require 'yaml'
 require 'active_record'
