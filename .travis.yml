@@ -1,0 +1,14 @@
+language: ruby
+rvm:
+  - 1.9.3
+  - 2.0.0
+
+gemfile:
+  - gemfiles/rails32.gemfile
+  - gemfiles/rails4.gemfile
+
+services:
+  - mysql
+
+before_script:
+  - mysql -e 'create database ar_transaction_changes_test'
