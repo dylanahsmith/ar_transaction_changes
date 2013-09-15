@@ -6,7 +6,7 @@ require 'ar_transaction_changes/version'
 Gem::Specification.new do |gem|
   gem.name          = "ar_transaction_changes"
   gem.version       = ArTransactionChanges::VERSION
-  gem.authors       = ["Dylan Smith"]
+  gem.authors       = ["Dylan Thacker-Smith"]
   gem.email         = ["Dylan.Smith@shopify.com"]
   gem.description   = %q{Solves the problem of trying to get all the changes to an object during a transaction in an after_commit callbacks.}
   gem.summary       = %q{Store transaction changes for active record objects}
