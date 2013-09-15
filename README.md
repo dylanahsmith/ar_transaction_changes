@@ -1,4 +1,5 @@
 # ArTransactionChanges
+[![Build Status](https://travis-ci.org/dylanahsmith/ar_transaction_changes.png?branch=master)](https://travis-ci.org/dylanahsmith/ar_transaction_changes)
 
 Store transaction changes for active record objects so that they
 are available in an after_commit callbacks.
