@@ -2,10 +2,12 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.1.1
 
 gemfile:
-  - gemfiles/rails32.gemfile
-  - gemfiles/rails4.gemfile
+  - gemfiles/rails_3_2.gemfile
+  - gemfiles/rails_4_0_5.gemfile
+  - gemfiles/rails_4_1_stable.gemfile
 
 services:
   - mysql
