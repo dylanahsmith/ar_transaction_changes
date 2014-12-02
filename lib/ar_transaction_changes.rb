@@ -1,16 +1,42 @@
 require "ar_transaction_changes/version"
 
 module ArTransactionChanges
-  def run_callbacks(kind, &block)
-    ret = super
-    case kind.to_sym
-    when :create, :update
+  if (ActiveRecord::VERSION::MAJOR == 4 && ActiveRecord::VERSION::MINOR >= 2) || ActiveRecord::VERSION::MAJOR > 4
+    def _run_create_callbacks
+      ret = super
       store_transaction_changed_attributes if ret != false
-    when :commit, :rollback
+      ret
+    end
+
+    def _run_update_callbacks
+      ret = super
+      store_transaction_changed_attributes if ret != false
+      ret
+    end
+
+    def _run_commit_callbacks
+      super
+    ensure
       @transaction_changed_attributes = nil
     end
 
-    ret
+    def _run_rollback_callbacks
+      super
+    ensure
+      @transaction_changed_attributes = nil
+    end
+  else
+    def run_callbacks(kind)
+      ret = super
+      case kind.to_sym
+      when :create, :update
+        store_transaction_changed_attributes if ret != false
+      when :commit, :rollback
+        @transaction_changed_attributes = nil
+      end
+
+      ret
+    end
   end
 
   def transaction_changed_attributes
