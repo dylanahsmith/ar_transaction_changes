@@ -26,7 +26,7 @@ module ArTransactionChanges
       @transaction_changed_attributes = nil
     end
   else
-    def run_callbacks(kind)
+    def run_callbacks(kind, *args)
       ret = super
       case kind.to_sym
       when :create, :update
