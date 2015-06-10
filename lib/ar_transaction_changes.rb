@@ -1,7 +1,7 @@
 require "ar_transaction_changes/version"
 
 module ArTransactionChanges
-  if (ActiveRecord::VERSION::MAJOR == 4 && ActiveRecord::VERSION::MINOR >= 2) || ActiveRecord::VERSION::MAJOR > 4
+  if (ActiveRecord::VERSION::MAJOR == 4 && ActiveRecord::VERSION::MINOR >= 2)
     def _run_create_callbacks
       ret = super
       store_transaction_changed_attributes if ret != false

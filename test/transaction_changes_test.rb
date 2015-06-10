@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TransactionChangesTest < MiniTest::Unit::TestCase
+class TransactionChangesTest < Minitest::Test
   def setup
     @user = User.new(:name => "Dylan", :occupation => "Developer")
     @user.save!
