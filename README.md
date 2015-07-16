@@ -1,8 +1,14 @@
 # ArTransactionChanges
 [![Build Status](https://travis-ci.org/dylanahsmith/ar_transaction_changes.png?branch=master)](https://travis-ci.org/dylanahsmith/ar_transaction_changes)
 
-Store transaction changes for active record objects so that they
-are available in an after_commit callbacks.
+Store all attribute changes for active record objects during a
+transaction so that they are available in an after_commit callbacks.
+
+Note that using previous_changes in an after_commit hook will only
+return the attribute changes from the last time the record was
+saved, which won't include all the changes made to the record in
+the transaction if the record was saved multiple times in the same
+transaction. Use this gem to solve this problem.
 
 ## Installation
 
