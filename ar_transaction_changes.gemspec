@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["Dylan.Smith@shopify.com"]
   gem.description   = %q{Solves the problem of trying to get all the changes to an object during a transaction in an after_commit callbacks.}
   gem.summary       = %q{Store transaction changes for active record objects}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/dylanahsmith/ar_transaction_changes"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
