@@ -40,7 +40,7 @@ module ArTransactionChanges
   end
 
   def transaction_changed_attributes
-    changed_attributes.merge(@transaction_changed_attributes || {})
+    changed_attributes.merge(@transaction_changed_attributes ||= {})
   end
 
   private
