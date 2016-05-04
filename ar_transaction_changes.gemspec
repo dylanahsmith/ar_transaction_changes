@@ -17,10 +17,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency "activerecord", ">= 3.0", "< 5.0"
+  gem.add_dependency "activerecord", ">= 3.0", "< 6.0", "!= 4.2.3"
 
   gem.add_development_dependency("rake")
   gem.add_development_dependency("mysql2")
   gem.add_development_dependency("appraisal")
-  gem.add_development_dependency("minitest")
 end
