@@ -22,4 +22,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency("rake")
   gem.add_development_dependency("mysql2")
   gem.add_development_dependency("appraisal")
+  gem.add_development_dependency("minitest")
 end
