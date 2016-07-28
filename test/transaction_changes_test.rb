@@ -86,4 +86,11 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
 
     assert_equal [old_updated_at, @user.updated_at], @user.stored_transaction_changes["updated_at"]
   end
+
+  def test_transaction_changes_for_multiple_changes
+    @user.name = "Dillon"
+    @user.name = "Lisa"
+    @user.save!
+    assert_equal ["Dylan", "Lisa"], @user.stored_transaction_changes["name"]
+  end
 end
