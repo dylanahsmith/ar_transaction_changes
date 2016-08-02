@@ -1,6 +1,9 @@
 require "ar_transaction_changes/version"
+require 'attributes_changed_by_write'
 
 module ArTransactionChanges
+  include AttributeChangedByWrite
+
   def _run_create_callbacks
     ret = super
     store_transaction_changed_attributes if ret != false
@@ -26,7 +29,7 @@ module ArTransactionChanges
   end
 
   def transaction_changed_attributes
-    changed_attributes.merge(@transaction_changed_attributes ||= {})
+    attributes_changed_by_setter.merge(attributes_changed_by_write.merge(@transaction_changed_attributes ||= {}))
   end
 
   private

@@ -66,4 +66,31 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     assert_equal ["Dylan", "Dillon"], @user.stored_transaction_changes["name"]
   end
 
+  def test_transaction_changes_for_changing_updated_at
+    @user.update_attributes!(updated_at: Time.now - 1.second)
+    old_updated_at = @user.updated_at
+    @user.stored_transaction_changes = nil
+
+    @user.updated_at = Time.now
+    @user.save!
+
+    assert_equal [old_updated_at, @user.updated_at], @user.stored_transaction_changes["updated_at"]
+  end
+
+  def test_transaction_changes_for_touch
+    @user.update_attributes!(updated_at: Time.now - 1.second)
+    old_updated_at = @user.updated_at
+    @user.stored_transaction_changes = nil
+
+    @user.touch
+
+    assert_equal [old_updated_at, @user.updated_at], @user.stored_transaction_changes["updated_at"]
+  end
+
+  def test_transaction_changes_for_multiple_changes
+    @user.name = "Dillon"
+    @user.name = "Lisa"
+    @user.save!
+    assert_equal ["Dylan", "Lisa"], @user.stored_transaction_changes["name"]
+  end
 end
