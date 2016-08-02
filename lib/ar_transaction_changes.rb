@@ -1,18 +1,6 @@
 require "ar_transaction_changes/version"
 
 module ArTransactionChanges
-  def _run_create_callbacks
-    ret = super
-    store_transaction_changed_attributes if ret != false
-    ret
-  end
-
-  def _run_update_callbacks
-    ret = super
-    store_transaction_changed_attributes if ret != false
-    ret
-  end
-
   def _run_commit_callbacks
     super
   ensure
@@ -26,12 +14,15 @@ module ArTransactionChanges
   end
 
   def transaction_changed_attributes
-    changed_attributes.merge(@transaction_changed_attributes ||= {})
+    @transaction_changed_attributes ||= HashWithIndifferentAccess.new
   end
 
   private
 
-  def store_transaction_changed_attributes
-    @transaction_changed_attributes = transaction_changed_attributes
+  def write_attribute(attr_name, value) # override
+    unless transaction_changed_attributes.key?(attr_name)
+      transaction_changed_attributes[attr_name] = attributes[attr_name]
+    end
+    super
   end
 end
