@@ -86,4 +86,14 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
 
     assert_equal [old_updated_at, @user.updated_at], @user.stored_transaction_changes["updated_at"]
   end
+
+  def test_transaction_changes_doesnt_record_non_changes
+    @user.transaction do
+      @user.name = "Dylan"
+      @user.save!
+
+      @user.reload
+    end
+    refute @user.stored_transaction_changes["name"]
+  end
 end

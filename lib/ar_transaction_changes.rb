@@ -20,8 +20,8 @@ module ArTransactionChanges
   private
 
   def write_attribute(attr_name, value) # override
-    unless transaction_changed_attributes.key?(attr_name)
-      transaction_changed_attributes[attr_name] = attributes[attr_name]
+    unless transaction_changed_attributes.key?(attr_name) || attributes.with_indifferent_access[attr_name] == value
+      transaction_changed_attributes[attr_name] = attributes.with_indifferent_access[attr_name]
     end
     super
   end
