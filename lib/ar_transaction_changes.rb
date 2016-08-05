@@ -38,10 +38,12 @@ module ArTransactionChanges
   private
 
   def write_attribute(attr_name, value) # override
-    unless transaction_changed_attributes.key?(attr_name) || attributes.with_indifferent_access[attr_name] == value
-      transaction_changed_attributes[attr_name] = attributes.with_indifferent_access[attr_name]
+    old_value = attributes.with_indifferent_access[attr_name]
+    ret = super
+    unless transaction_changed_attributes.key?(attr_name) || value == old_value
+      transaction_changed_attributes[attr_name] = old_value
     end
-    super
+    ret
   end
 
   def store_deprecated_transaction_changed_attributes
