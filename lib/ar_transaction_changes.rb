@@ -38,7 +38,8 @@ module ArTransactionChanges
   private
 
   def write_attribute(attr_name, value) # override
-    old_value = attributes.with_indifferent_access[attr_name]
+    attr_name = attr_name.to_s
+    old_value = attributes[attr_name]
     ret = super
     unless transaction_changed_attributes.key?(attr_name) || value == old_value
       transaction_changed_attributes[attr_name] = old_value
