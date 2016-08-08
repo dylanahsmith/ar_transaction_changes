@@ -91,8 +91,6 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     @user.transaction do
       @user.name = "Dylan"
       @user.save!
-
-      @user.reload
     end
     refute @user.stored_transaction_changes["name"]
   end
