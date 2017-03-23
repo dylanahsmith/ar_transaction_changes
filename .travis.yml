@@ -2,18 +2,18 @@ language: ruby
 sudo: false
 
 rvm:
-  - 2.1.9
   - 2.2.5
   - 2.3.1
 
 gemfile:
   - Gemfile.rails42
   - Gemfile.rails50
+  - Gemfile.rails51
 
 matrix:
-  exclude:
+  include:
     - rvm: 2.1.9
-      gemfile: Gemfile.rails50
+      gemfile: Gemfile.rails42
 
 services:
   - mysql
