@@ -41,7 +41,7 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
       @user.save!
       raise ActiveRecord::Rollback
     end
-    assert_equal nil, @user.stored_transaction_changes
+    assert_nil @user.stored_transaction_changes
   end
 
   def test_transaction_changes_after_reload_saved
