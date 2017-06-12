@@ -17,8 +17,6 @@ module ArTransactionChanges
     @transaction_changed_attributes ||= HashWithIndifferentAccess.new
   end
 
-  private
-
   def write_attribute(attr_name, value) # override
     attr_name = attr_name.to_s
     old_value = attributes[attr_name]
