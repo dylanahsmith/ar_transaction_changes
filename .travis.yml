@@ -9,6 +9,7 @@ gemfile:
   - Gemfile.rails42
   - Gemfile.rails50
   - Gemfile.rails51
+  - Gemfile.rails52
 
 matrix:
   include:
