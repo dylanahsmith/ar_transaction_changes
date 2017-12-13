@@ -1,4 +1,5 @@
 require "ar_transaction_changes/version"
+require "active_record"
 
 module ArTransactionChanges
   def _run_commit_callbacks
@@ -17,10 +18,16 @@ module ArTransactionChanges
     @transaction_changed_attributes ||= HashWithIndifferentAccess.new
   end
 
-  def write_attribute(attr_name, value) # override
+  method_name = if ActiveRecord.gem_version >= Gem::Version.new("5.2.0.beta1")
+    "_write_attribute"
+  else
+    "write_attribute"
+  end
+
+  define_method(method_name) do |attr_name, value|
     attr_name = attr_name.to_s
     old_value = attributes[attr_name]
-    ret = super
+    ret = super(attr_name, value)
     unless transaction_changed_attributes.key?(attr_name) || value == old_value
       transaction_changed_attributes[attr_name] = old_value
     end

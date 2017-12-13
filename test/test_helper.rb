@@ -1,7 +1,6 @@
 ENV["RAILS_ENV"] = "test"
 require 'pathname'
 require 'yaml'
-require 'active_record'
 require 'ar_transaction_changes'
 require 'minitest/autorun'
 
