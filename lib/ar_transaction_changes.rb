@@ -24,10 +24,10 @@ module ArTransactionChanges
     "write_attribute"
   end
 
-  define_method(method_name) do |attr_name, value|
+  define_method(method_name) do |attr_name, value, *options|
     attr_name = attr_name.to_s
     old_value = read_attribute(attr_name)
-    ret = super(attr_name, value)
+    ret = super(attr_name, value, *options)
     unless transaction_changed_attributes.key?(attr_name) || value == old_value
       transaction_changed_attributes[attr_name] = old_value
     end
