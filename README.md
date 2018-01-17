@@ -44,6 +44,19 @@ class User < ActiveRecord::Base
 end
 ```
 
+## Important Notes
+
+`ar_transaction_changes` may have conflict with another gems who modify
+`active_record#write_attribute` method, e.g. `globalize` gem
+
+the workaround is by requiring this gem first, for example:
+
+```ruby
+gem 'ar_transaction_changes', require: false
+gem 'globalize', require: ['ar_transaction_changes', 'globalize']
+
+```
+
 ## Contributing
 
 1. Fork it
