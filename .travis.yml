@@ -17,6 +17,8 @@ matrix:
       gemfile: Gemfile.rails42
     - rvm: 2.5.0
       gemfile: Gemfile.rails60
+    - rvm: 2.5.0
+      gemfile: Gemfile.rails_head
 
 services:
   - mysql
