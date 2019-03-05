@@ -67,7 +67,7 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
   end
 
   def test_transaction_changes_for_changing_updated_at
-    @user.update_attributes!(updated_at: Time.now - 1.second)
+    @user.update!(updated_at: Time.now - 1.second)
     old_updated_at = @user.updated_at
     @user.stored_transaction_changes = nil
 
@@ -78,7 +78,7 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
   end
 
   def test_transaction_changes_for_touch
-    @user.update_attributes!(updated_at: Time.now - 1.second)
+    @user.update!(updated_at: Time.now - 1.second)
     old_updated_at = @user.updated_at
     @user.stored_transaction_changes = nil
 
