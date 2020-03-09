@@ -18,6 +18,7 @@ ActiveRecord::Base.connection.tap do |db|
   db.create_table(:users) do |t|
     t.string :name
     t.string :occupation
+    t.text :settings
     t.timestamps null: false
   end
 end

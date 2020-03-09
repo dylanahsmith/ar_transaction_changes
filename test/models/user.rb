@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   include ArTransactionChanges
 
+  store :settings, accessors: :favorite_color
+
   attr_accessor :stored_transaction_changes
 
   after_commit :store_transaction_changes_for_tests
