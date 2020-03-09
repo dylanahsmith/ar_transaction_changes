@@ -19,6 +19,7 @@ ActiveRecord::Base.connection.tap do |db|
     t.string :name
     t.string :occupation
     t.integer :age
+    t.text :settings
     t.timestamps null: false
   end
 end

@@ -87,6 +87,15 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     assert_equal [old_updated_at, @user.updated_at], @user.stored_transaction_changes["updated_at"]
   end
 
+  def test_store_accessor
+    @user.update!(favorite_color: "Red")
+    @user.stored_transaction_changes = nil
+
+    @user.update!(favorite_color: "Blue")
+
+    assert_equal [{"favorite_color"=>"Red"}, {"favorite_color"=>"Blue"}], @user.stored_transaction_changes["settings"]
+  end
+
   def test_transaction_changes_doesnt_record_non_changes
     @user.transaction do
       @user.name = "Dylan"
