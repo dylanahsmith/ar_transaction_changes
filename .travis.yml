@@ -12,6 +12,3 @@ jobs:
 
 services:
   - mysql
-
-before_script:
-  - mysql -e 'create database ar_transaction_changes_test'
