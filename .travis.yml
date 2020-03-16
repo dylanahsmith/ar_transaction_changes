@@ -3,11 +3,14 @@ sudo: false
 
 jobs:
   include:
-    - rvm: 2.4
+    - name: "Minimum supported versions"
+      rvm: 2.4
       gemfile: Gemfile.rails52
-    - rvm: 2.7
-      gemfile: Gemfile.rails60
-    - rvm: 2.7
+    - name: "Latest released versions"
+      rvm: 2.7
+      gemfile: Gemfile
+    - name: "Rails master branch"
+      rvm: 2.7
       gemfile: Gemfile.rails_head
 
 services:
