@@ -2,29 +2,32 @@ require "ar_transaction_changes/version"
 require "active_record"
 
 module ArTransactionChanges
+  extend ActiveSupport::Concern
+
+  included do
+    before_commit do
+      @_saved_start_transaction_state = @_start_transaction_state
+    end
+  end
+
   def _run_commit_callbacks
     super
   ensure
-    @transaction_changed_attributes = nil
-  end
-
-  def _run_rollback_callbacks
-    super
-  ensure
-    @transaction_changed_attributes = nil
+    @_saved_start_transaction_state = nil
   end
 
   def transaction_changed_attributes
-    @transaction_changed_attributes ||= HashWithIndifferentAccess.new
-  end
-
-  def _write_attribute(attr_name, value)
-    attr_name = attr_name.to_s
-    old_value = read_attribute(attr_name)
-    ret = super(attr_name, value)
-    unless transaction_changed_attributes.key?(attr_name) || value == old_value
-      transaction_changed_attributes[attr_name] = old_value
+    changed_attributes = HashWithIndifferentAccess.new
+    if start_transaction_state = @_saved_start_transaction_state || @_start_transaction_state
+      old_attributes = start_transaction_state.fetch(:attributes)
+      self.class.attribute_types.each_key do |attr_name|
+        original_value = old_attributes[attr_name].original_value
+        new_value = attribute_in_database(attr_name)
+        if original_value != new_value
+          changed_attributes[attr_name] = original_value
+        end
+      end
     end
-    ret
+    changed_attributes
   end
 end
