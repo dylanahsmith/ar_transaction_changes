@@ -19,8 +19,21 @@ module ArTransactionChanges
   end
 
   def changes_applied
-    super
+    ret = super
     changes = saved_changes.transform_values(&:first)
-    transaction_changed_attributes.merge!(changes)
+    transaction_changed_attributes.reverse_merge!(changes)
+    ret
+  end
+
+  if ActiveRecord.version < Gem::Version.new('6.0')
+    def touch(*names, **)
+      attribute_names = timestamp_attributes_for_update_in_model
+      attribute_names |= names.map(&:to_s)
+      attribute_names.each do |attr_name|
+        next if transaction_changed_attributes.key?(attr_name)
+        transaction_changed_attributes[attr_name] = read_attribute(attr_name)
+      end
+      super
+    end
   end
 end
