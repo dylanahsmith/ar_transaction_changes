@@ -22,7 +22,8 @@ module ArTransactionChanges
     attr_name = attr_name.to_s
     old_value = read_attribute(attr_name)
     ret = super(attr_name, value)
-    unless transaction_changed_attributes.key?(attr_name) || value == old_value
+    new_value = read_attribute(attr_name)
+    unless transaction_changed_attributes.key?(attr_name) || new_value == old_value
       transaction_changed_attributes[attr_name] = old_value
     end
     ret

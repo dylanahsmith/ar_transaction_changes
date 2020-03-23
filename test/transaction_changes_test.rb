@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TransactionChangesTest < MiniTest::Unit::TestCase
   def setup
-    @user = User.new(:name => "Dylan", :occupation => "Developer")
+    @user = User.new(:name => "Dylan", :occupation => "Developer", age: 20)
     @user.save!
     @user.stored_transaction_changes = nil
   end
@@ -93,5 +93,14 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
       @user.save!
     end
     refute @user.stored_transaction_changes["name"]
+  end
+
+  def test_transaction_changes_type_cast
+    # "20" will be converted to 20 by read_attribute https://apidock.com/rails/ActiveRecord/AttributeMethods/read_attribute
+    @user.transaction do
+      @user.age = "20"
+      @user.save!
+    end
+    assert_empty @user.stored_transaction_changes
   end
 end
