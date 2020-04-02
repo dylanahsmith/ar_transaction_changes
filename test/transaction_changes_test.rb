@@ -54,13 +54,24 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     assert_equal ["Dylan", "Dillon"], @user.stored_transaction_changes["name"]
   end
 
+  def test_transaction_changed_attributes_outside_after_commit_raises
+    expected_message = "transaction_changed_attributes can only be used in an after_commit callback"
+
+    @user.transaction do
+      exc = assert_raises(RuntimeError) { @user.transaction_changed_attributes }
+      assert_equal(expected_message, exc.message)
+    end
+
+    exc = assert_raises(RuntimeError) { @user.transaction_changed_attributes }
+    assert_equal(expected_message, exc.message)
+  end
+
   def test_transaction_changes_after_reload_unsaved
     @user.transaction do
       @user.name = "Dillon"
       @user.save!
 
       @user.name = "Andrew"
-      assert_equal "Dylan", @user.transaction_changed_attributes["name"]
       @user.reload
     end
     assert_equal ["Dylan", "Dillon"], @user.stored_transaction_changes["name"]
