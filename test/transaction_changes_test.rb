@@ -23,6 +23,13 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     assert_equal ["Dylan", "Dillon"], @user.stored_transaction_changes["name"]
   end
 
+  def test_transaction_changes_for_updating_attribute
+    @user[:name] = "Dillon"
+    @user.save!
+
+    assert_equal ["Dylan", "Dillon"], @user.stored_transaction_changes["name"]
+  end
+
   def test_transaction_changes_for_double_save
     @user.transaction do
       @user.name = "Dillon"
