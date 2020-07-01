@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "ar_transaction_changes/version"
 require "active_record"
 
