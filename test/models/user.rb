@@ -1,6 +1,16 @@
 class User < ActiveRecord::Base
   include ArTransactionChanges
 
+  class ConnectionDetails
+    attr_accessor :client_ip
+
+    def initialize(client_ip:)
+      @client_ip = client_ip
+    end
+  end
+
+  serialize :connection_details, Array
+
   attr_accessor :stored_transaction_changes
 
   after_commit :store_transaction_changes_for_tests
