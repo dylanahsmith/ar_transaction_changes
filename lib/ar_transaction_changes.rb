@@ -53,6 +53,9 @@ module ArTransactionChanges
 
   def _read_attribute_for_transaction(attr_name)
     attribute = @attributes[attr_name]
+    # Avoid causing an earlier memoized type cast of mutable serialized user values,
+    # since could prevent mutations of that user value from affecting the attribute value
+    # that would affect it without using this library.
     if attribute.type.is_a?(::ActiveRecord::Type::Serialized)
       if attribute.came_from_user?
         attribute.type.serialize(attribute.value_before_type_cast)

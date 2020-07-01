@@ -114,7 +114,9 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
   def test_serialized_attributes_value
     @user.connection_details = [User::ConnectionDetails.new(client_ip: '1.1.1.1')]
     @user.save!
-    assert_instance_of Array, @user.stored_transaction_changes['connection_details']
+    old_value, new_value = @user.stored_transaction_changes['connection_details']
+    assert_equal([], old_value)
+    assert_equal(['1.1.1.1'], new_value.map(&:client_ip))
   end
 
   def test_serialized_attributes_mutation
