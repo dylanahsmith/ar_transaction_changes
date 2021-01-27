@@ -48,7 +48,6 @@ module ArTransactionChanges
       else
         old_value
       end
-      transaction_changed_attributes
     elsif transaction_changed_attributes.key?(attr_name)
       attribute = @attributes[attr_name]
       if attribute.type.is_a?(::ActiveRecord::Type::Serialized)
