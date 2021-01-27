@@ -1,5 +1,5 @@
 # ArTransactionChanges
-[![Build Status](https://travis-ci.org/dylanahsmith/ar_transaction_changes.svg?branch=master)](https://travis-ci.org/dylanahsmith/ar_transaction_changes)
+[![Build Status](https://github.com/dylanahsmith/ar_transaction_changes/workflows/CI/badge.svg?branch=main)](https://github.com/dylanahsmith/ar_transaction_changes/actions?query=branch%3Amain)
 
 Store all attribute changes for active record objects during a
 transaction so that they are available in an after_commit callbacks.
