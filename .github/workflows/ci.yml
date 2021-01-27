@@ -20,7 +20,7 @@ jobs:
           - name: "Latest released versions"
             ruby: 3.0
             gemfile: Gemfile
-          - name: "Rails master branch"
+          - name: "Rails main branch"
             ruby: 3.0
             gemfile: Gemfile.rails_head
 
