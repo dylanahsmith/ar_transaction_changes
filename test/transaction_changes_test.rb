@@ -127,12 +127,9 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     assert_equal '2.2.2.2', @user.connection_details.first.client_ip
   end
 
-  def test_multiple_changes_back_to_original_value
+  def test_double_save_back_to_original_value
     @user.transaction do
       @user.name = "Dillon"
-      @user.save!(touch: false)
-
-      @user.name = "Daring"
       @user.save!(touch: false)
 
       @user.name = "Dylan"
@@ -142,36 +139,17 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     assert_empty @user.stored_transaction_changes
   end
 
-  def test_multiple_changes_back_to_original_value_for_serialized_attribute
-    @user.favourite_cities_by_country = { 'ca' => 'Ottawa', 'jp' => 'Tokyo', 'gb' => ['Edinburgh', 'Manchester'] }
+  def test_double_save_back_to_original_value_for_serialized_attribute
+    @user.notes = ['a', 'b']
     @user.save!
-    @user.stored_transaction_changes = nil
 
     @user.transaction do
-      cities = @user.favourite_cities_by_country
-      cities['ca'] = ['Ottawa', 'Toronto']
-      @user.favourite_cities_by_country = cities
+      @user.notes = ['b', 'c']
       @user.save!(touch: false)
 
-      cities['gb'] << 'London'
-      @user.favourite_cities_by_country = cities
-      @user.save!(touch: false)
-
-      @user.favourite_cities_by_country = { 'ca' => 'Ottawa', 'jp' => 'Tokyo', 'gb' => ['Edinburgh', 'Manchester'] }
-      puts @user.favourite_cities_by_country.inspect
+      @user.notes = ['a', 'b']
       @user.save!(touch: false)
     end
-
-    assert_empty @user.stored_transaction_changes
-  end
-
-  def test_multiple_changes_back_to_original_value_for_serialized_attribute_implicit
-    @user.favourite_foods = ["Rice", "Sushi"]
-    @user.save!
-    @user.stored_transaction_changes = nil
-
-    @user.favourite_foods = ["Sushi", "Rice"] # sorted back in before_save
-    @user.save!(touch: false)
 
     assert_empty @user.stored_transaction_changes
   end

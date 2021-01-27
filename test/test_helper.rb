@@ -20,8 +20,7 @@ ActiveRecord::Base.connection.tap do |db|
     t.string :occupation
     t.integer :age
     t.text :connection_details
-    t.text :favourite_foods
-    t.text :favourite_cities_by_country
+    t.text :notes
     t.timestamps null: false
   end
 end
