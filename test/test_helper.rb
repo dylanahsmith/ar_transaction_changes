@@ -10,8 +10,10 @@ config_filename = test_dir.join("database.yml").exist? ? "database.yml" : "datab
 database_yml = YAML.load(test_dir.join(config_filename).read)
 database_config = database_yml.fetch("test")
 
-ActiveRecord::Base.establish_connection(database_config.except("database"))
-ActiveRecord::Base.connection.recreate_database(database_config.fetch("database"))
+if database_config.fetch('adapter') != 'sqlite3'
+  ActiveRecord::Base.establish_connection(database_config.except("database"))
+  ActiveRecord::Base.connection.recreate_database(database_config.fetch("database"))
+end
 ActiveRecord::Base.establish_connection(database_config)
 
 ActiveRecord::Base.connection.tap do |db|

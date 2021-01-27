@@ -1,7 +1,3 @@
 test:
-  adapter: mysql2
-  database: ar_transaction_changes_test
-  host: 127.0.0.1
-  encoding: utf8
-  username: root
-  password:
+  adapter: sqlite3
+  database: ':memory:'
