@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push: {}
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.owner.login != 'dylanahsmith'
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        entry:
+          - name: 'Minimum supported'
+            ruby: 2.4
+            gemfile: Gemfile.rails52
+          - name: "Latest released versions"
+            ruby: 3.0
+            gemfile: Gemfile
+          - name: "Rails master branch"
+            ruby: 3.0
+            gemfile: Gemfile.rails_head
+
+    name: ${{ matrix.entry.name }}
+
+    env:
+      BUNDLE_GEMFILE: ${{ matrix.entry.gemfile }}
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: ar_transaction_changes
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 3306:3306
+
+    steps:
+    - name: Install required packages
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install libsqlite3-dev
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.entry.ruby }}
+    - name: Install bundler and gems
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+    - name: Run tests
+      run: bundle exec rake
