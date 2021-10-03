@@ -153,4 +153,12 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
 
     assert_empty @user.stored_transaction_changes
   end
+
+  def test_mutating_serialized_attribute_in_place_with_attribute_will_change
+    @user.notes_will_change!
+    @user.notes.push('a')
+    @user.save!
+
+    assert_equal [nil, ['a']], @user.stored_transaction_changes['notes']
+  end
 end

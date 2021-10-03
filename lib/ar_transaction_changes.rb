@@ -34,6 +34,11 @@ module ArTransactionChanges
     end
   end
 
+  def attribute_will_change!(attr_name)
+    transaction_changed_attributes[attr_name] = _read_attribute_for_transaction(attr_name)
+    super
+  end
+
   private
 
   def _store_transaction_changed_attributes(attr_name)
