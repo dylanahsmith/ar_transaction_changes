@@ -159,6 +159,19 @@ class TransactionChangesTest < MiniTest::Unit::TestCase
     @user.notes.push('a')
     @user.save!
 
-    assert_equal [nil, ['a']], @user.stored_transaction_changes['notes']
+    assert_equal [[], ['a']], @user.stored_transaction_changes['notes']
+  end
+
+  def test_double_modification_with_attribute_will_change
+    @user.transaction do
+      @user.notes = ['a']
+      @user.save!
+
+      @user.notes_will_change!
+      @user.notes.push('b')
+      @user.save!
+    end
+
+    assert_equal [[], ['a', 'b']], @user.stored_transaction_changes['notes']
   end
 end
