@@ -34,7 +34,22 @@ module ArTransactionChanges
     end
   end
 
+  def attribute_will_change!(attr_name)
+    unless transaction_changed_attributes.key?(attr_name)
+      value = _read_attribute_for_transaction(attr_name)
+      value = _deserialize_transaction_change_value(attr_name, value)
+      transaction_changed_attributes[attr_name] = value
+    end
+    super
+  end
+
   private
+
+  def _deserialize_transaction_change_value(attr_name, value)
+    attribute = @attributes[attr_name]
+    return value unless attribute.type.is_a?(::ActiveRecord::Type::Serialized)
+    attribute.type.deserialize(value)
+  end
 
   def _store_transaction_changed_attributes(attr_name)
     attr_name = attr_name.to_s
@@ -42,17 +57,9 @@ module ArTransactionChanges
     ret = yield
     new_value = _read_attribute_for_transaction(attr_name)
     if !transaction_changed_attributes.key?(attr_name) && new_value != old_value
-      attribute = @attributes[attr_name]
-      transaction_changed_attributes[attr_name] = if attribute.type.is_a?(::ActiveRecord::Type::Serialized)
-        attribute.type.deserialize(old_value)
-      else
-        old_value
-      end
+      transaction_changed_attributes[attr_name] = _deserialize_transaction_change_value(attr_name, old_value)
     elsif transaction_changed_attributes.key?(attr_name)
-      attribute = @attributes[attr_name]
-      if attribute.type.is_a?(::ActiveRecord::Type::Serialized)
-        new_value = attribute.type.deserialize(new_value)
-      end
+      new_value = _deserialize_transaction_change_value(attr_name, new_value)
 
       stored_value = transaction_changed_attributes[attr_name]
 
