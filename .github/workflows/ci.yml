@@ -15,13 +15,13 @@ jobs:
       matrix:
         entry:
           - name: 'Minimum supported'
-            ruby: 2.6
+            ruby: 2.7
             gemfile: Gemfile.rails52
           - name: "Latest released versions"
-            ruby: 3.0
+            ruby: 3.2
             gemfile: Gemfile
           - name: "Rails main branch"
-            ruby: 3.0
+            ruby: 3.2
             gemfile: Gemfile.rails_head
 
     name: ${{ matrix.entry.name }}
