@@ -45,6 +45,11 @@ module ArTransactionChanges
 
   private
 
+  def init_internals
+    super
+    @transaction_changed_attributes = nil
+  end
+
   def _deserialize_transaction_change_value(attr_name, value)
     attribute = @attributes[attr_name]
     return value unless attribute.type.is_a?(::ActiveRecord::Type::Serialized)
