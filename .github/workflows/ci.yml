@@ -16,7 +16,7 @@ jobs:
         entry:
           - name: 'Minimum supported'
             ruby: 2.7
-            gemfile: Gemfile.rails52
+            gemfile: Gemfile.rails6
           - name: "Latest released versions"
             ruby: 3.2
             gemfile: Gemfile
