@@ -28,3 +28,10 @@ ActiveRecord::Base.connection.tap do |db|
 end
 
 Dir[test_dir.join("models/*.rb")].each{ |file| require file }
+
+serializable_classes = [User::ConnectionDetails]
+if ActiveRecord::VERSION::MAJOR >= 7
+  ActiveRecord.yaml_column_permitted_classes += serializable_classes
+else
+  ActiveRecord::Base.yaml_column_permitted_classes += serializable_classes
+end
