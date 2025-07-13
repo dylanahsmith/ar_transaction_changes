@@ -1,3 +1,5 @@
+**Maintenance has been handed over to https://github.com/Shopify/ar_transaction_changes/ so go there for latest development**
+
 # ArTransactionChanges
 [![Build Status](https://github.com/dylanahsmith/ar_transaction_changes/workflows/CI/badge.svg?branch=main)](https://github.com/dylanahsmith/ar_transaction_changes/actions?query=branch%3Amain)
 
